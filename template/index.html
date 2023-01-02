@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Virtual Assistant</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>body{
+            text-align: center;
+            background: #1F212D;
+            color: white;
+        }
+        * {
+    padding: 0px;
+    margin: 0px;
+}
+.output{
+  color: white;
+}
+.bu{
+  margin-bottom: 20px;
+}
+body {
+  /* background-image: linear-gradient( 106.1deg,  rgba(69,242,143,0.52) 10.2%, rgba(14,228,175,0.61) 83.6% ); */
+  background-image:#1F212D;
+}
+header {
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    height: 10vh;
+    box-shadow: 5px 10px 10px rgb(0,0,0,0.3);
+}
+#a{
+  color: white;
+}
+h1 {
+    letter-spacing: 1.5vw;
+    font-family: 'system-ui';
+    text-transform: uppercase;
+    text-align: center;
+}
+h2{
+    font-family: 'system-ui';
+    text-transform: uppercase;
+    text-align: center; 
+}
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 75vh;
+    width: 100%;
+}
+footer {
+    
+    height: 10vh;
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 62px;
+    box-shadow: -5px -5px 10px rgb(0,0,0,0.3);
+}
+footer > p {
+    text-align: center;
+    font-family: 'system-ui';
+    letter-spacing: 3px;
+}
+footer > p > a {
+    text-decoration: none;
+    color: rgb(5, 5, 5);
+    font-weight: bold;
+} 
+
+        /* CSS */
+        .button-85 {
+          padding: 1.2em 2.3em;
+         
+          border: none;
+          outline: none;
+          color: rgb(255, 255, 255);
+          background: #111;
+          cursor: pointer;
+          position: relative;
+          z-index: 0;
+          border-radius: 10px;
+          user-select: none;
+          -webkit-user-select: none;
+          touch-action: manipulation;
+          font-size: 17px;
+        }
+        .output{
+            color: whitesmoke;
+            padding: 30px;
+            font-family:cursive ;
+        }
+        .button-85:before {
+          content: "";
+          background: linear-gradient(
+            45deg,
+            #ff0000,
+            #ff7300,
+            #fffb00,
+            #48ff00,
+            #00ffd5,
+            #002bff,
+            #7a00ff,
+            #ff00c8,
+            #ff0000
+          );
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          background-size: 400%;
+          z-index: -1;
+          filter: blur(5px);
+          -webkit-filter: blur(5px);
+          width: calc(100% + 4px);
+          height: calc(100% + 4px);
+          animation: glowing-button-85 20s linear infinite;
+          transition: opacity 0.3s ease-in-out;
+          border-radius: 10px;
+        }
+        
+        @keyframes glowing-button-85 {
+          0% {
+            background-position: 0 0;
+          }
+          50% {
+            background-position: 400% 0;
+          }
+          100% {
+            background-position: 0 0;
+          }
+        }
+        
+        .button-85:after {
+          z-index: -1;
+          content: "";
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background: rgb(0, 0, 0);
+          left: 0;
+          top: 0;
+          border-radius: 10px;
+        }
+        </style>
+    </head>
+    <body>
+      <header>
+        <h1>  I am your Virtual Assistant-ANYA</h1>
+      </header>
+      <div class="bu">
+       
+        <!-- <img class="gif"height="250" src="server\template\ezgif.com-gif-maker (1).gif"> -->
+        <!-- <img  class="gif" height="'250" src="{{user_image}}"> -->
+        <img src="{{url_for('static',filename='pic.gif')}}">
+    </div>
+    <button class="button-85"><i class="fa fa-microphone">  &#160 Speak</i></button>
+    <div class="output">
+    <h2 id="a"></h2>
+    <div class="show-data" >
+      {{results}}
+    </div>
+</div>
+        <script>const button = document.querySelector("button");
+            const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
+            
+            const recognition = new SpeechRecognition();
+            
+            recognition.onstart =function() {
+                console.log("speech");
+            };
+            recognition.onresult= function(event){
+                console.log(event);
+                const spokenwords=event.results[0][0].transcript;
+                console.log(spokenwords);
+                document.getElementById('a').innerHTML = spokenwords;
+                const dict_values = {spokenwords} //Pass the javascript variables to a dictionary.
+                    const s = JSON.stringify(dict_values);
+                $.ajax({
+                    url:"/test",
+                    type:"POST",
+                    contentType: "application/json",
+                    data: JSON.stringify(s)
+                  })
+                };            
+            button.addEventListener("click",()=>{
+                recognition.start();
+            });
+        </script>
+      </body>
+      
+
+      <footer>
+        <p>Developed By Code Brigade</p>
+    </footer>
+</html>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
